@@ -28,6 +28,7 @@ class UserMessageScreen extends StatefulWidget {
 class _UserMessageScreenState extends State<UserMessageScreen> {
   ScrollController _scrollController = new ScrollController();
   late Timer _debounce;
+  late int datea;
 
   @override
   Widget build(BuildContext context) {
