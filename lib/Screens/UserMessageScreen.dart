@@ -3,14 +3,13 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 
-class Messages{
+class Messages {
   late String text;
   // If from == 0 MessageFrom me, from ==1 MessageFromU
   late int from;
 }
 
 class UserMessageScreen extends StatefulWidget {
-
   List<Messages> messages = [];
 
   var _chars = 'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890';
@@ -20,7 +19,7 @@ class UserMessageScreen extends StatefulWidget {
       length, (_) => _chars.codeUnitAt(_rnd.nextInt(_chars.length))));
   String title;
 
-  UserMessageScreen({Key? key,required this.title}) : super(key: key);
+  UserMessageScreen({Key? key, required this.title}) : super(key: key);
 
   @override
   _UserMessageScreenState createState() => _UserMessageScreenState();
@@ -30,103 +29,109 @@ class _UserMessageScreenState extends State<UserMessageScreen> {
   ScrollController _scrollController = new ScrollController();
   late Timer _debounce;
 
-
-
   @override
   Widget build(BuildContext context) {
     var rng = new Random();
-    for(int i =0;i<rng.nextInt(50);i++)
-      {
-        Messages msg = Messages();
-        var rng = new Random();
-        msg.from=rng.nextInt(2);
-        print(msg.from.toString());
-        msg.text=widget.getRandomString(rng.nextInt(30));
-        widget.messages.add(msg);
-      }
+    for (int i = 0; i < rng.nextInt(50); i++) {
+      Messages msg = Messages();
+      var rng = new Random();
+      msg.from = rng.nextInt(2);
+      print(msg.from.toString());
+      msg.text = widget.getRandomString(rng.nextInt(30));
+      widget.messages.add(msg);
+    }
     return Scaffold(
       appBar: AppBar(
         title: Row(
           children: [
             CircleAvatar(
               radius: 25.0,
-              backgroundImage:
-               AssetImage('Assets/DefaultPP.png'),
-              backgroundColor: Colors.transparent,),
-            SizedBox(width: 15,),
+              backgroundImage: AssetImage('Assets/DefaultPP.png'),
+              backgroundColor: Colors.transparent,
+            ),
+            SizedBox(
+              width: 15,
+            ),
             Text(widget.title),
           ],
         ),
       ),
       body: GestureDetector(
-        onTap: (){
+        onTap: () {
           FocusScope.of(context).requestFocus(new FocusNode());
         },
         child: Container(
           decoration: BoxDecoration(
             image: DecorationImage(
-              image: AssetImage('Assets/Black.png'),
-              fit: BoxFit.fill
-            ),
+                image: AssetImage('Assets/Black.png'), fit: BoxFit.fill),
           ),
           child: Column(
             children: [
               Expanded(
-                child: ListView.builder(itemBuilder: (context,i){
-                  return ListTile(
-                      title: widget.messages[i].from!=0
-                          ? Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          Flexible(
-                            child: Container(
-                                constraints: BoxConstraints(
-                                    maxWidth: MediaQuery.of(context).size.width - 80),
-                                child: Padding(
-                                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                                    child: SelectableText(
-                                      widget.messages[i].text,
-                                      style: TextStyle(fontSize: 22),
+                child: ListView.builder(
+                    itemBuilder: (context, i) {
+                      return ListTile(
+                          title: widget.messages[i].from != 0
+                              ? Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    Flexible(
+                                      child: Container(
+                                          constraints: BoxConstraints(
+                                              maxWidth: MediaQuery.of(context)
+                                                      .size
+                                                      .width -
+                                                  80),
+                                          child: Padding(
+                                              padding: EdgeInsets.symmetric(
+                                                  horizontal: 10, vertical: 10),
+                                              child: SelectableText(
+                                                widget.messages[i].text,
+                                                style: TextStyle(fontSize: 22),
+                                              )),
+                                          decoration: BoxDecoration(
+                                            color: Colors.green,
+                                            borderRadius: BorderRadius.only(
+                                              topRight: Radius.circular(18),
+                                              topLeft: Radius.circular(18),
+                                              bottomLeft: Radius.circular(18),
+                                              bottomRight: Radius.circular(0),
+                                            ),
+                                          )),
                                     )
-                                ),
-                                decoration: BoxDecoration(
-                                  color: Colors.green,
-                                  borderRadius: BorderRadius.only(
-                                    topRight: Radius.circular(18),
-                                    topLeft: Radius.circular(18),
-                                    bottomLeft: Radius.circular(18),
-                                    bottomRight: Radius.circular(0),
-                                  ),)),
-                          )
-                        ],
-                      )
-                          : Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Flexible(
-                            child: Container(
-                                constraints: BoxConstraints(
-                                    maxWidth: MediaQuery.of(context).size.width - 80),
-                                child: Padding(
-                                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                                    child: SelectableText(
-                                      widget.messages[i].text,
-                                      style: TextStyle(fontSize: 22),
+                                  ],
+                                )
+                              : Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    Flexible(
+                                      child: Container(
+                                          constraints: BoxConstraints(
+                                              maxWidth: MediaQuery.of(context)
+                                                      .size
+                                                      .width -
+                                                  80),
+                                          child: Padding(
+                                              padding: EdgeInsets.symmetric(
+                                                  horizontal: 10, vertical: 10),
+                                              child: SelectableText(
+                                                widget.messages[i].text,
+                                                style: TextStyle(fontSize: 22),
+                                              )),
+                                          decoration: BoxDecoration(
+                                            color: Colors.white,
+                                            borderRadius: BorderRadius.only(
+                                              topRight: Radius.circular(18),
+                                              topLeft: Radius.circular(18),
+                                              bottomLeft: Radius.circular(0),
+                                              bottomRight: Radius.circular(18),
+                                            ),
+                                          )),
                                     )
-                                ),
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.only(
-                                    topRight: Radius.circular(18),
-                                    topLeft: Radius.circular(18),
-                                    bottomLeft: Radius.circular(0),
-                                    bottomRight: Radius.circular(18),
-                                  ),)),
-                          )
-                        ],
-                      )
-                  );
-                },itemCount: widget.messages.length),
+                                  ],
+                                ));
+                    },
+                    itemCount: widget.messages.length),
               ),
               Container(
                 child: Row(
@@ -136,11 +141,11 @@ class _UserMessageScreenState extends State<UserMessageScreen> {
                         child: TextFormField(
                           onTap: () {
                             setState(() {
-                              if (_debounce.isActive)
-                                _debounce.cancel();
-                              _debounce = Timer(
-                                  const Duration(milliseconds: 500), () {
-                                _scrollController.animateTo(_scrollController.position.maxScrollExtent,
+                              if (_debounce.isActive) _debounce.cancel();
+                              _debounce =
+                                  Timer(const Duration(milliseconds: 500), () {
+                                _scrollController.animateTo(
+                                    _scrollController.position.maxScrollExtent,
                                     duration: Duration(milliseconds: 700),
                                     curve: Curves.fastOutSlowIn);
                               });
@@ -150,25 +155,21 @@ class _UserMessageScreenState extends State<UserMessageScreen> {
                           // controller: inputController,
                           minLines: 1,
                           maxLines: 3,
-                            decoration: TaylanTextDeco.txtDec(context),
+                          decoration: TaylanTextDeco.txtDec(context),
                           // maxLines: 3,
                         ),
-                        width:300,
+                        width: 300,
                         height: 48,
                         decoration: BoxDecoration(
-                            borderRadius: BorderRadius.all(Radius.circular(
-                                24)),
+                            borderRadius: BorderRadius.all(Radius.circular(24)),
                             gradient: LinearGradient(
                                 begin: Alignment(
                                     0.6702184081077576, 0.8622856140136719),
                                 end: Alignment(0.9053288102149963, 0),
-                                colors: [
-                                  Colors.white,
-                                  Colors.white
-                                ]))),
+                                colors: [Colors.white, Colors.white]))),
                     InkWell(
                       onTap: () {
-                         FocusScope.of(context).requestFocus(new FocusNode());
+                        FocusScope.of(context).requestFocus(new FocusNode());
                         // if (_debounce?.isActive ?? false) _debounce.cancel();
                         // _debounce =
                         //     Timer(const Duration(milliseconds: 100), () {
@@ -176,8 +177,7 @@ class _UserMessageScreenState extends State<UserMessageScreen> {
                         //     });
                       },
                       child: Padding(
-                        padding: EdgeInsets.only(
-                            left:5),
+                        padding: EdgeInsets.only(left: 5),
                         child: Icon(
                           Icons.camera_alt,
                           size: 40,
@@ -213,8 +213,7 @@ class _UserMessageScreenState extends State<UserMessageScreen> {
                         // });
                       },
                       child: Padding(
-                        padding: EdgeInsets.only(
-                            left: 5),
+                        padding: EdgeInsets.only(left: 5),
                         child: Icon(
                           Icons.send,
                           size: 35,
@@ -225,7 +224,9 @@ class _UserMessageScreenState extends State<UserMessageScreen> {
                   ],
                 ),
               ),
-              SizedBox(height: 10,)
+              SizedBox(
+                height: 10,
+              )
             ],
           ),
         ),
@@ -236,14 +237,14 @@ class _UserMessageScreenState extends State<UserMessageScreen> {
 
 class TaylanTextDeco extends InputDecoration {
   static txtDec(
-      BuildContext context,
-      ) {
+    BuildContext context,
+  ) {
     return InputDecoration(
       alignLabelWithHint: true,
       errorBorder: OutlineInputBorder(
         borderRadius: BorderRadius.all(
           Radius.circular(
-           22,
+            22,
           ),
         ),
         borderSide: BorderSide(
@@ -251,16 +252,14 @@ class TaylanTextDeco extends InputDecoration {
         ),
       ),
       labelStyle: TextStyle(
-        // height: 0.7,
+          // height: 0.7,
           color: Color(0xff000000),
           fontWeight: FontWeight.w500,
           fontFamily: "Quicksand",
           fontStyle: FontStyle.normal,
           fontSize: 16),
       labelText: 'Açıklama yazınız..',
-      contentPadding: EdgeInsets.only(
-          left: 10,
-          top: 0),
+      contentPadding: EdgeInsets.only(left: 10, top: 0),
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.all(
           Radius.circular(
