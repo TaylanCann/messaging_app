@@ -226,7 +226,7 @@ class _UserMessageScreenState extends State<UserMessageScreen> {
                 ),
               ),
               SizedBox(
-                height: 11,
+                height: 10,
               )
             ],
           ),
