@@ -4,7 +4,7 @@ import 'package:messaging_app/Screens/UserMessageScreen.dart';
 class MainScreen extends StatefulWidget {
 
   String title;
-  List<String> MainScreenPeople =['Kullanıcı1','Kullanıcı2','Kullanıcı3','Kullanıcı4','Kullanıcı5',
+  List<String> mainScreenPeople =['Kullanıcı1','Kullanıcı2','Kullanıcı3','Kullanıcı4','Kullanıcı5',
     'Kullanıcı6','Kullanıcı7','Kullanıcı8','Kullanıcı9','Kullanıcı10'];
 
   MainScreen({Key? key, required this.title}) : super(key: key);
@@ -25,10 +25,10 @@ class _MainScreenState extends State<MainScreen> {
         return Card(
           child: ListTile(
             onTap: (){
-              Navigator.push(context, MaterialPageRoute(builder: (_)=> UserMessageScreen(title: widget.MainScreenPeople[i])));
+              Navigator.push(context, MaterialPageRoute(builder: (_)=> UserMessageScreen(title: widget.mainScreenPeople[i])));
             },
             subtitle: Text("sda"),
-            title: Text(widget.MainScreenPeople[i]),
+            title: Text(widget.mainScreenPeople[i]),
             leading:  CircleAvatar(
               radius: 25.0,
               backgroundImage:
@@ -36,7 +36,7 @@ class _MainScreenState extends State<MainScreen> {
               backgroundColor: Colors.transparent,),
           ),
         );
-      },itemCount: widget.MainScreenPeople.length,),
+      },itemCount: widget.mainScreenPeople.length,),
     );
   }
 }
