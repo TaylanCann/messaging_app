@@ -1,12 +1,11 @@
-import 'dart:async';
 import 'dart:math';
-
 import 'package:flutter/material.dart';
+import 'package:messaging_app/Helpers/Globals.dart';
 
 class Messages {
-  late String text;
+   String text="";
   // If from == 0 MessageFrom me, from ==1 MessageFromU
-  late int from;
+   int from=0;
 }
 
 class UserMessageScreen extends StatefulWidget {
@@ -26,21 +25,28 @@ class UserMessageScreen extends StatefulWidget {
 }
 
 class _UserMessageScreenState extends State<UserMessageScreen> {
-  ScrollController _scrollController = new ScrollController();
-  late Timer _debounce;
-  late int datea;
+  TextEditingController inputController = TextEditingController();
+  FocusNode focusNode=FocusNode();
+  ScrollController _scrollController =  Globals().scrollController;
 
   @override
-  Widget build(BuildContext context) {
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
     var rng = new Random();
     for (int i = 0; i < rng.nextInt(50); i++) {
       Messages msg = Messages();
       var rng = new Random();
       msg.from = rng.nextInt(2);
-      print(msg.from.toString());
       msg.text = widget.getRandomString(rng.nextInt(30));
       widget.messages.add(msg);
     }
+  }
+
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Row(
@@ -70,9 +76,10 @@ class _UserMessageScreenState extends State<UserMessageScreen> {
             children: [
               Expanded(
                 child: ListView.builder(
+                  controller: _scrollController ,
                     itemBuilder: (context, i) {
                       return ListTile(
-                          title: widget.messages[i].from != 0
+                          title: widget.messages[i].from != 1
                               ? Row(
                                   mainAxisAlignment: MainAxisAlignment.end,
                                   children: [
@@ -140,24 +147,16 @@ class _UserMessageScreenState extends State<UserMessageScreen> {
                   children: [
                     Container(
                         child: TextFormField(
+                          controller: inputController,
                           onTap: () {
                             setState(() {
-                              if (_debounce.isActive) _debounce.cancel();
-                              _debounce =
-                                  Timer(const Duration(milliseconds: 500), () {
-                                _scrollController.animateTo(
-                                    _scrollController.position.maxScrollExtent,
-                                    duration: Duration(milliseconds: 700),
-                                    curve: Curves.fastOutSlowIn);
-                              });
+                             Globals().useTimer();
                             });
                           },
-                          // focusNode: focusNode,
-                          // controller: inputController,
+                          focusNode: focusNode,
                           minLines: 1,
                           maxLines: 3,
                           decoration: TaylanTextDeco.txtDec(context),
-                          // maxLines: 3,
                         ),
                         width: 300,
                         height: 48,
@@ -171,7 +170,8 @@ class _UserMessageScreenState extends State<UserMessageScreen> {
                     InkWell(
                       onTap: () {
                         FocusScope.of(context).requestFocus(new FocusNode());
-                        // if (_debounce?.isActive ?? false) _debounce.cancel();
+                        //Todo eklenecek bu kod
+                        // if (_debounce?.isActive ?? false) _debounce?.cancel();
                         // _debounce =
                         //     Timer(const Duration(milliseconds: 100), () {
                         //       _takePic();
@@ -188,31 +188,24 @@ class _UserMessageScreenState extends State<UserMessageScreen> {
                     ),
                     InkWell(
                       onTap: () async {
-                        // inputController.text.trim() != ""
-                        //     ? channel.sink.add(json.encode({
-                        //   'msg': inputController.text,
-                        //   'time': DateTime.now().toString(),
-                        //   'token': await Token.readToken(),
-                        //   'subject': widget.statu,
-                        //   'sender': userId,
-                        //   'roomId': roomId,
-                        //   "admin": false,
-                        //   'media': false
-                        // }))
-                        //     : Globals.toast(
-                        //     false, "Lütfen geçerli bir mesaj giriniz.");
-                        // inputController.text = '';
-                        // setState(() {
-                        //   if (_debounce?.isActive ?? false)
-                        //     _debounce.cancel();
-                        //   _debounce = Timer(
-                        //       const Duration(milliseconds: 300), () {
-                        //     _scrollController.animateTo(_scrollController.position.maxScrollExtent,
-                        //         duration: Duration(milliseconds: 300),
-                        //         curve: Curves.fastOutSlowIn);
-                        //   });
-                        // });
-                      },
+                         if(inputController.text.trim() != "") {
+                           Messages msg = Messages();
+                           msg.from = 0;
+                           msg.text = inputController.text;
+                           widget.messages.add(msg);
+                           setState(() {
+                             inputController.text="";
+                           });
+                         }
+                         else {
+                           Globals.toast(
+                               false, "Lütfen geçerli bir mesaj giriniz.");
+                           inputController.text = '';
+                           setState(() {
+                             Globals().useTimer();
+                           });
+                         }
+                         },
                       child: Padding(
                         padding: EdgeInsets.only(left: 5),
                         child: Icon(
@@ -259,7 +252,7 @@ class TaylanTextDeco extends InputDecoration {
           fontFamily: "Quicksand",
           fontStyle: FontStyle.normal,
           fontSize: 16),
-      labelText: 'Açıklama yazınız..',
+
       contentPadding: EdgeInsets.only(left: 10, top: 0),
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.all(
