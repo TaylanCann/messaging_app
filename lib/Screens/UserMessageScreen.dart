@@ -1,12 +1,8 @@
 import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:messaging_app/Helpers/Globals.dart';
-
-class Messages {
-   String text="";
-  // If from == 0 MessageFrom me, from ==1 MessageFromU
-   int from=0;
-}
+import 'package:messaging_app/Models/Messages.dart';
 
 class UserMessageScreen extends StatefulWidget {
   List<Messages> messages = [];
@@ -26,8 +22,8 @@ class UserMessageScreen extends StatefulWidget {
 
 class _UserMessageScreenState extends State<UserMessageScreen> {
   TextEditingController inputController = TextEditingController();
-  FocusNode focusNode=FocusNode();
-  ScrollController _scrollController =  Globals().scrollController;
+  FocusNode focusNode = FocusNode();
+  ScrollController _scrollController = Globals().scrollController;
 
   @override
   void initState() {
@@ -43,7 +39,6 @@ class _UserMessageScreenState extends State<UserMessageScreen> {
       widget.messages.add(msg);
     }
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -76,7 +71,7 @@ class _UserMessageScreenState extends State<UserMessageScreen> {
             children: [
               Expanded(
                 child: ListView.builder(
-                  controller: _scrollController ,
+                    controller: _scrollController,
                     itemBuilder: (context, i) {
                       return ListTile(
                           title: widget.messages[i].from != 1
@@ -150,7 +145,7 @@ class _UserMessageScreenState extends State<UserMessageScreen> {
                           controller: inputController,
                           onTap: () {
                             setState(() {
-                             Globals().useTimer();
+                              Globals().useTimer();
                             });
                           },
                           focusNode: focusNode,
@@ -188,24 +183,23 @@ class _UserMessageScreenState extends State<UserMessageScreen> {
                     ),
                     InkWell(
                       onTap: () async {
-                         if(inputController.text.trim() != "") {
-                           Messages msg = Messages();
-                           msg.from = 0;
-                           msg.text = inputController.text;
-                           widget.messages.add(msg);
-                           setState(() {
-                             inputController.text="";
-                           });
-                         }
-                         else {
-                           Globals.toast(
-                               false, "Lütfen geçerli bir mesaj giriniz.");
-                           inputController.text = '';
-                           setState(() {
-                             Globals().useTimer();
-                           });
-                         }
-                         },
+                        if (inputController.text.trim() != "") {
+                          Messages msg = Messages();
+                          msg.from = 0;
+                          msg.text = inputController.text;
+                          widget.messages.add(msg);
+                          setState(() {
+                            inputController.text = "";
+                          });
+                        } else {
+                          Globals.toast(
+                              false, "Lütfen geçerli bir mesaj giriniz.");
+                          inputController.text = '';
+                          setState(() {
+                            Globals().useTimer();
+                          });
+                        }
+                      },
                       child: Padding(
                         padding: EdgeInsets.only(left: 5),
                         child: Icon(
@@ -252,7 +246,6 @@ class TaylanTextDeco extends InputDecoration {
           fontFamily: "Quicksand",
           fontStyle: FontStyle.normal,
           fontSize: 16),
-
       contentPadding: EdgeInsets.only(left: 10, top: 0),
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.all(
