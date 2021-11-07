@@ -34,6 +34,7 @@ class Message {
   }
 
   Future<Database> initializeDb() async {
+
     ///Database'in gömüleceği kök klasör çekilir.
     Directory dir = await getApplicationDocumentsDirectory();
     String path = dir.path + "products.db";
