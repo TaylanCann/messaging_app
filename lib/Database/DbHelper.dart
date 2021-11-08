@@ -7,8 +7,8 @@ import 'package:sqflite/sqflite.dart';
 ///Bu Helper Sqlite için oluşturuldu. Eğer mobil cihaza sqlite kullanılacaksa bu helper iş görür.
 ///Sqflite ve path_provider kütüphanelerinin son sürümü çekilip kullanılmalıdır.
 
-class Message {
-  static final Message _message = Message._internal();
+class DbHelper {
+  static final DbHelper _dbHelper = DbHelper._internal();
 
   ///Tablo ve columnlar tanımlanır
 
@@ -18,10 +18,10 @@ class Message {
   String colTotal = "total";
   String colUpdateDate = "updateDate";
 
-  Message._internal();
+  DbHelper._internal();
 
-  factory Message() {
-    return _message;
+  factory DbHelper() {
+    return _dbHelper;
   }
 
   ///Database tanıtılır.
@@ -34,7 +34,6 @@ class Message {
   }
 
   Future<Database> initializeDb() async {
-
     ///Database'in gömüleceği kök klasör çekilir.
     Directory dir = await getApplicationDocumentsDirectory();
     String path = dir.path + "products.db";
